@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('crypto', 'CryptoController');
+//Route::resource('crypto', 'CryptoController');

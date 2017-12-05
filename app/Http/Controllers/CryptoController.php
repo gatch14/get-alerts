@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\model\Crypto;
 
 class CryptoController extends Controller
 {
@@ -13,6 +14,13 @@ class CryptoController extends Controller
      */
     public function index()
     {
+        $crypto = new Crypto;
+        $crypto->name = 'BTC';
+        $crypto->price = 11000;
+        $crypto->choices = 'low';
+        $crypto->choices_value = 'BTC';
+        $crypto->user_id = 1;
+        $crypto->save();
         dd('ok');
     }
 
@@ -34,7 +42,8 @@ class CryptoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        echo $request->name;
+        return json_encode(['test' => $request->name]);
     }
 
     /**
@@ -68,7 +77,7 @@ class CryptoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd('update');
     }
 
     /**
