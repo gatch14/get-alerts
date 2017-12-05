@@ -14,14 +14,7 @@ class CryptoController extends Controller
      */
     public function index()
     {
-        $crypto = new Crypto;
-        $crypto->name = 'BTC';
-        $crypto->price = 11000;
-        $crypto->choices = 'low';
-        $crypto->choices_value = 'BTC';
-        $crypto->user_id = 1;
-        $crypto->save();
-        dd('ok');
+        return json_encode(['test' => 'ok']);
     }
 
     /**
