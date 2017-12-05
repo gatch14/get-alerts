@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\model\Crypto;
 
@@ -14,7 +15,9 @@ class CryptoController extends Controller
      */
     public function index()
     {
-        return json_encode(['test' => 'ok']);
+        $cryptos = Crypto::where('user_id', Auth::user()->id )->get();
+
+        return response()->json(['data' => $cryptos]);
     }
 
     /**
@@ -47,7 +50,11 @@ class CryptoController extends Controller
      */
     public function show($id)
     {
-        //
+        $crypto = Crypto::where('user_id', Auth::user()->id )
+            ->where('id', $id)
+            ->get();
+
+        return response()->json(['data' => $crypto]);
     }
 
     /**
