@@ -38,8 +38,14 @@ class CryptoController extends Controller
      */
     public function store(Request $request)
     {
-        echo $request->name;
-        return json_encode(['test' => $request->name]);
+        $data = new Crypto;
+        $data->name = request('name');
+        $data->price = request('price');
+        $data->choices = request('choices');
+        $data->choices_value = request('choices_value');
+        $data->user_id = Auth::user()->id;
+        $data->save();
+        return response()->json(['result' => 'ok']);
     }
 
     /**
