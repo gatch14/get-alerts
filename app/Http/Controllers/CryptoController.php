@@ -95,6 +95,10 @@ class CryptoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $crypto = Crypto::where('user_id', Auth::user()->id )
+            ->where('id', $id)
+            ->delete();
+
+        return response()->json(['data' => $crypto]);
     }
 }
