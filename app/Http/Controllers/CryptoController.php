@@ -6,6 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use App\model\Crypto;
 use App\Http\Requests\StoreCryptoRequest;
+use App\Http\Requests\UpdateCryptoRequest;
 
 class CryptoController extends Controller
 {
@@ -82,9 +83,13 @@ class CryptoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCryptoRequest $request, $id)
     {
-        dd('update');
+        $crypto = Crypto::where('user_id', Auth::user()->id )
+            ->where('id', $id)
+            ->update($request->all());
+
+        return response()->json(['data' => $crypto]);
     }
 
     /**
