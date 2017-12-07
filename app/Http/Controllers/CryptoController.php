@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 use App\model\Crypto;
+use App\Http\Requests\StoreCryptoRequest;
 
 class CryptoController extends Controller
 {
@@ -36,7 +37,7 @@ class CryptoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCryptoRequest $request)
     {
         $data = new Crypto;
         $data->name = request('name');
