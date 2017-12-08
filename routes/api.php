@@ -21,3 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::resource('crypto', 'CryptoController')->middleware('auth:api');
+
+Route::get('json', 'ApiDataController@storeDataInJson');
+Route::get('read-json', 'ApiDataController@readJson');
+Route::get('symbol', 'ApiDataController@symbol');
