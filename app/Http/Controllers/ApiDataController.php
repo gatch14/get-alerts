@@ -14,7 +14,7 @@ class ApiDataController extends Controller
         $url = "https://api.coinmarketcap.com/v1/ticker/?limit=0";
         $data = file_get_contents($url);
 
-        $cryptos = 'cryptos.json';
+        $cryptos = '../resources/cryptos.json';
 
         $fichier = fopen($cryptos, 'w+');
 
@@ -30,7 +30,7 @@ class ApiDataController extends Controller
      */
     public function readJson()
     {
-        $json_source = file_get_contents('cryptos.json');
+        $json_source = file_get_contents('../resources/cryptos.json');
 
         $data = json_decode($json_source);
 
@@ -42,14 +42,14 @@ class ApiDataController extends Controller
      */
     public function symbol()
     {
-        $json_source = file_get_contents('cryptos.json');
+        $json_source = file_get_contents('../resources/cryptos.json');
         //on decode
         $json = json_decode($json_source);
         $data = array();
         foreach ($json as $key) {
             array_push($data, $key->symbol);
         }
-        
+
         return response()->json([$data]);
     }
 }
