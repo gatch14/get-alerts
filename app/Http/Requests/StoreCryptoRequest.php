@@ -23,8 +23,9 @@ class StoreCryptoRequest extends FormRequest
      */
     public function rules()
     {
+        $dataSymbol = app('App\Http\Controllers\ApiDataController')->getSymbol();
         return [
-            'name' => 'required|in:BTC,ETH',
+            'name' => 'required|in:' . implode(',', $dataSymbol),
             'price' => 'required|numeric',
             'choices' => 'required|in:low,high',
             'choices_value' => 'required|in:BTC,$'

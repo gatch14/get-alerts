@@ -40,16 +40,17 @@ class ApiDataController extends Controller
     /**
      * add symbol in array
      */
-    public function symbol()
+    public function getSymbol()
     {
         $json_source = file_get_contents('../resources/cryptos.json');
-        //on decode
+
         $json = json_decode($json_source);
+
         $data = array();
         foreach ($json as $key) {
             array_push($data, $key->symbol);
         }
 
-        return response()->json([$data]);
+        return $data;
     }
 }
