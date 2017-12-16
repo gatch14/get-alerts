@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\model\Crypto;
 
 class ApiDataController extends Controller
 {
@@ -52,5 +53,42 @@ class ApiDataController extends Controller
         }
 
         return $data;
+    }
+
+    /**
+     * check if alert
+     */
+    public function checkAlert()
+    {
+        $json_source = file_get_contents('../resources/cryptos.json');
+
+        $data = json_decode($json_source);
+
+        $cryptos = Crypto::where('alerted', 0)->get();
+
+        $result = [];
+        foreach ($data as $key => $value) {
+            foreach ($cryptos as $crypto){
+                if ($crypto->choices_value === '$' && $data[$key]->symbol === $crypto->name){
+                    if ($data[$key]->price_usd > $crypto->price
+                        && $crypto->choices === 'high'){
+                            array_push($result, $crypto->id);
+                    } elseif ($data[$key]->price_usd < $crypto->price
+                        && $crypto->choices === 'low'){
+                        array_push($result, $crypto->id);
+                    }
+                } elseif ($crypto->choices_value === 'BTC' && $data[$key]->symbol === $crypto->name){
+                    if ($data[$key]->price_btc > $crypto->price
+                        && $crypto->choices === 'high'){
+                        array_push($result, $crypto->id);
+                    } elseif ($data[$key]->price_btc < $crypto->price
+                        && $crypto->choices === 'low'){
+                        array_push($result, $crypto->id);
+                    }
+                }
+            }
+        }
+        
+        return response()->json(['data' => $result]);
     }
 }
