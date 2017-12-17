@@ -66,6 +66,9 @@ class ApiDataController extends Controller
 
         $cryptos = Crypto::where('alerted', 0)->get();
 
+        /**
+         * Find alert
+         */
         $result = [];
         foreach ($data as $key => $value) {
             foreach ($cryptos as $crypto){
@@ -75,20 +78,33 @@ class ApiDataController extends Controller
                             array_push($result, $crypto->id);
                     } elseif ($data[$key]->price_usd < $crypto->price
                         && $crypto->choices === 'low'){
-                        array_push($result, $crypto->id);
+                            array_push($result, $crypto->id);
                     }
                 } elseif ($crypto->choices_value === 'BTC' && $data[$key]->symbol === $crypto->name){
                     if ($data[$key]->price_btc > $crypto->price
                         && $crypto->choices === 'high'){
-                        array_push($result, $crypto->id);
+                            array_push($result, $crypto->id);
                     } elseif ($data[$key]->price_btc < $crypto->price
                         && $crypto->choices === 'low'){
-                        array_push($result, $crypto->id);
+                            array_push($result, $crypto->id);
                     }
                 }
             }
         }
-        
-        return response()->json(['data' => $result]);
+
+        $alerts = Crypto::select('email', 'cryptos.*')
+        ->join('users', 'users.id', '=', 'cryptos.user_id')
+        ->whereIn('cryptos.id', $result)
+        ->get()
+        ->groupBy('email');
+
+        foreach ($alerts as $mail => $alerts){
+            echo 'email: ' .$mail . PHP_EOL;
+            foreach ($alerts as $alert){
+                echo 'id de la crypto: ' . $alert->id . PHP_EOL;
+            }
+        }
+
+        //return ($alerts);
     }
 }
