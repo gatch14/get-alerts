@@ -95,10 +95,10 @@ class ApiDataController extends Controller
         }
 
         $alerts = Crypto::select('email', 'cryptos.*')
-        ->join('users', 'users.id', '=', 'cryptos.user_id')
-        ->whereIn('cryptos.id', $result)
-        ->get()
-        ->groupBy('email');
+            ->join('users', 'users.id', '=', 'cryptos.user_id')
+            ->whereIn('cryptos.id', $result)
+            ->get()
+            ->groupBy('email');
 
         foreach ($alerts as $mail => $cryptos){
             $mailable = new AlertUsers($mail, $cryptos);
