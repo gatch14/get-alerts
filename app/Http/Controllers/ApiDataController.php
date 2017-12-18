@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\model\Crypto;
+use App\Mail\AlertUsers;
+use Illuminate\Support\Facades\Mail;
 
 class ApiDataController extends Controller
 {
@@ -98,13 +100,15 @@ class ApiDataController extends Controller
         ->get()
         ->groupBy('email');
 
-        foreach ($alerts as $mail => $alerts){
-            echo 'email: ' .$mail . PHP_EOL;
-            foreach ($alerts as $alert){
-                echo 'id de la crypto: ' . $alert->id . PHP_EOL;
+        foreach ($alerts as $mail => $cryptos){
+            $mailable = new AlertUsers($mail, $cryptos);
+            Mail::to('admin@alerted.com')->send($mailable);
+            foreach ($cryptos as $crypto){
+                Crypto::where('id', $crypto->id)
+                    ->update(['alerted' => 1]);
             }
         }
 
-        //return ($alerts);
+        return response()->json(['ok']);
     }
 }
